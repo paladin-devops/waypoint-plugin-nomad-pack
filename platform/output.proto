@@ -1,0 +1,22 @@
+
+syntax = "proto3";
+
+package platform;
+
+option go_package = "github.com/paladin-devops/waypoint-plugin-nomad-pack/platform";
+
+import "opaqueany/any.proto";
+
+message Deployment {
+  string id = 1;
+  string name = 2;
+  opaqueany.Any resource_state = 3;
+}
+
+message Resource {
+  string name = 1;
+  message Pack {
+    string name = 1;
+  }
+
+}
