@@ -1,3 +1,24 @@
+FROM golang:1.17-alpine3.16 as build
+
+# Install the Protocol Buffers compiler and Go plugin
+RUN apk add protobuf git make zip
+RUN go get github.com/golang/protobuf/protoc-gen-go \
+    google.golang.org/grpc/cmd/protoc-gen-go-grpc
+
+# Create the source folder
+RUN mkdir /go/plugin
+WORKDIR /go/plugin
+
+# Copy the source to the build folder
+COPY . /go/plugin
+
+# Build the plugin
+RUN chmod +x ./print_arch
+RUN make all
+
+# Create the zipped binaries
+RUN make zip
+
 # TODO: Use Waypoint to build this image, and template the base image
 # and tag for Nomad Pack
 FROM hashicorp/nomad-pack:0.0.1-techpreview.3 AS builder
@@ -5,4 +26,5 @@ FROM hashicorp/nomad-pack:0.0.1-techpreview.3 AS builder
 FROM hashicorp/waypoint-odr:latest
 
 COPY --from=builder /bin/nomad-pack /usr/local/bin/nomad-pack
+COPY --from=build /go/plugin/bin/*.zip $HOME/.config/waypoint/plugins/waypoint-plugin-nomad-pack
 
