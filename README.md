@@ -12,13 +12,6 @@ configured pack from the registry to your Nomad cluster. Presently, the Nomad
 cluster targeted for deployment relies on environment variables that Nomad Pack
 uses, including `NOMAD_ADDR`, `NOMAD_TOKEN`, etc.
 
-If you're using Waypoint with a local runner (either with the `-local` flag, or you
-haven't configured remote operations for your project), then these environment variables
-may be set in the same terminal where Waypoint is running. If you're using remote 
-operations, they may be set via `waypoint config set -runner`, as demonstrated below:
-
-`waypoint config set -runner -scope=global NOMAD_ADDR=http://127.0.0.1:4646 NOMAD_TOKEN=my-cool-nomad-token`
-
 ## Usage
 
 ### Inputs
@@ -31,6 +24,25 @@ operations, they may be set via `waypoint config set -runner`, as demonstrated b
 - `registry_target` = a specific Nomad Pack within a registry to add, optional.
 - `variables` = Nomad Pack variable overrides, optional.
 - `variable_files` = path to a Nomad Pack variable override file, optional.
+
+### Nomad Configuration
+
+If you're using Waypoint with a local runner (either with the `-local` flag, or you
+haven't configured remote operations for your project), then the environment variables
+used by Nomad Pack may be set in the same terminal where Waypoint is running. If you're
+using remote operations, they may be set via `waypoint config set -runner`, as demonstrated below:
+
+`waypoint config set -runner -scope=global NOMAD_ADDR=http://127.0.0.1:4646 NOMAD_TOKEN=my-cool-nomad-token`
+
+### Remote Operations
+
+The Waypoint ODR image has been extended, and a custom ODR image which includes the 
+Nomad Pack binary is available at the [Docker repository `paladindevops/waypoint-odr-nomad-pack:latest`](https://hub.docker.com/repository/docker/paladindevops/waypoint-odr-nomad-pack). With the Waypoint CLI, you can use this image
+in your project's remote operations by creating a runner profile with this image configured!
+An example of this for a Docker ODR is below, but this can work on any platform for which
+there is a task launcher plugin.
+
+`waypoint runner profile set -plugin-type=docker -oci-url=paladindevops/waypoint-odr-nomad-pack:latest -name=docker-nomad-pack -default`
 
 ### Example
 
