@@ -37,14 +37,14 @@ using remote operations, they may be set via `waypoint config set -runner`, as d
 ### Remote Operations
 
 The Waypoint ODR image has been extended, and a custom ODR image which includes the 
-Nomad Pack binary is available at the [Docker repository `paladindevops/waypoint-odr-nomad-pack:latest`](https://hub.docker.com/repository/docker/paladindevops/waypoint-odr-nomad-pack). With the Waypoint CLI, you can use this image
+Nomad Pack binary is available at the [Docker repository `paladindevops/waypoint-odr-nomad-pack:latest`](https://hub.docker.com/r/paladindevops/waypoint-odr-nomad-pack). With the Waypoint CLI, you can use this image
 in your project's remote operations by creating a runner profile with this image configured!
 An example of this for a Docker ODR is below, but this can work on any platform for which
 there is a task launcher plugin.
 
 `waypoint runner profile set -plugin-type=docker -oci-url=paladindevops/waypoint-odr-nomad-pack:latest -name=docker-nomad-pack -default`
 
-### Example
+### Example Usage
 
 #### waypoint.hcl File
 ```hcl
