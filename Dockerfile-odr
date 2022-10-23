@@ -17,16 +17,14 @@ RUN chmod +x ./print_arch
 RUN protoc -I thirdparty/proto -I . --go_out=plugins=grpc:. --go_opt=paths=source_relative ./platform/output.proto \
     && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o /go/plugin/bin/waypoint-plugin-nomad-pack /go/plugin/main.go
 
-FROM alpine:latest AS git
-
-RUN apk add git
-
 # TODO: Use Waypoint to build this image, and template the base image
 # and tag for Nomad Pack
 FROM hashicorp/nomad-pack:0.0.1-techpreview.3 AS builder
 
-FROM hashicorp/waypoint-odr:latest
+FROM paladindevops/waypoint-odr-alpine:latest
 
-COPY --from=git /usr/bin/git /kaniko/git
+# Git CLI is required for Nomad Pack
+RUN apk add --no-cache git
+
 COPY --from=builder /bin/nomad-pack /kaniko/nomad-pack
 COPY --from=build /go/plugin/bin/waypoint-plugin-nomad-pack /root/.config/waypoint/plugins/waypoint-plugin-nomad-pack
