@@ -51,4 +51,4 @@ build-docker:
 # Build the plugin into the Waypoint ODR image
 build-docker-odr:
 	rm -rf ./releases
-	DOCKER_BUILDKIT=1 docker build --output releases --progress=plain -f=Dockerfile-odr .
+	DOCKER_BUILDKIT=1 docker build --progress=plain -f=Dockerfile-odr .
