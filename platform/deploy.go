@@ -139,6 +139,7 @@ func (p *Platform) generation(
 	statusCmd := exec.Command("nomad-pack", statusArgs...)
 	output, err := statusCmd.Output()
 	if err != nil {
+		ui.Output(string(output[:]), terminal.WithErrorStyle())
 		ui.Output("Error getting pack status: %s", err, terminal.WithErrorStyle())
 		return nil, err
 	}
@@ -267,6 +268,7 @@ func (p *Platform) packStatus(
 	statusCmd := exec.Command("nomad-pack", statusArgs...)
 	output, err := statusCmd.Output()
 	if err != nil {
+		ui.Output(string(output[:]), terminal.WithErrorStyle())
 		ui.Output("Error getting pack status: %s", err, terminal.WithErrorStyle())
 		return err
 	}
